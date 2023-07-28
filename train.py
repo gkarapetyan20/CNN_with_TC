@@ -9,16 +9,16 @@ import torchvision.datasets as datasets
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-
+print(device)
 train_loader , val_loader , _ = build_dataloader()
 
 vgg_model = VGG_New().to(device)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(vgg_model.parameters(), lr=0.00001)
+optimizer = optim.Adam(vgg_model.parameters(), lr=0.00001 , weight_decay=0.001)
 
 
-def train_vgg(vgg_model, dataloader, criterion, optimizer, num_epochs=50):
+def train_vgg(vgg_model, dataloader, criterion, optimizer, num_epochs=150):
     vgg_model.train()
     for epoch in range(num_epochs):
         running_loss = 0.0
@@ -31,7 +31,7 @@ def train_vgg(vgg_model, dataloader, criterion, optimizer, num_epochs=50):
             loss = criterion(outputs, targets)
             loss.backward()
             optimizer.step()
-
+           # print(f"Epoch {epoch+1}, Iteration {inputs+1}, Loss: {loss.item():.4f}")
             running_loss += loss.item()
 
         print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {running_loss / len(dataloader)}')
@@ -56,7 +56,7 @@ def calculate_validation_loss(model, val_loader, criterion):
     return avg_val_loss
 
 
-train_vgg(vgg_model, train_loader, criterion, optimizer, num_epochs=50)
+train_vgg(vgg_model, train_loader, criterion, optimizer, num_epochs=150)
 
 
 torch.save(vgg_model.state_dict(), 'vgg_model.pth')

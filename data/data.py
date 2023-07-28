@@ -16,10 +16,10 @@ transform = transforms.Compose([
     transforms.RandomCrop(32, padding=4),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
-    transforms.Normalize(mean=(0.4914, 0.4822, 0.4465), std=(0.2470, 0.2435, 0.2616))  # Normalize images to [-1, 1]
+    transforms.Normalize(mean=(0.5071, 0.4866, 0.4409), std=(0.2673, 0.2564, 0.2761))  # Normalize images to [-1, 1]
 ])
 
-dataset = datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
+dataset = datasets.CIFAR100(root='./data', train=True, transform=transform, download=True)
 
 def build_dataloader():
     # dataset = datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
